@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatCurrency } from "@/helpers/format-currency";
 
 interface ProductDetailsProps {
@@ -38,8 +39,8 @@ const ProductDetails = ({ product}: ProductDetailsProps) => {
   }
  
   return (  
-    <div className="relative flex-auto rounded-t-3xl z-50 py-5 mt-[-1.5rem] px-5 flex flex-col">
-      <div className="flex-auto">
+    <div className="relative flex-auto rounded-t-3xl z-50 py-5 mt-[-1.5rem] px-5 flex flex-col overflow-hidden">
+      <div className="flex-auto overflow-hidden">
         <div className="flex items-center gap-1.5">
           <Image src={product.restaurant.avatarImageUrl} alt={product.restaurant.name} width={16} height={16} className="rounded-full" />
           <p className="text-xs text-muted-foreground">{product.restaurant.name}</p>
@@ -47,7 +48,7 @@ const ProductDetails = ({ product}: ProductDetailsProps) => {
 
         <h2 className="text-xl font-semibold mt-1">{product.name}</h2>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-3">
           <h3 className="text-xl font-semibold">{formatCurrency(product.price)}</h3>
 
           <div className="flex items-center gap-3 text-center">
@@ -61,18 +62,24 @@ const ProductDetails = ({ product}: ProductDetailsProps) => {
           </div>
         </div>
 
-        <div className="mt-6 space-y-3">
-          <h4 className="font-semibold">Sobre</h4>
-          <p className="text-sm text-muted-foreground">{product.description}</p>
-        </div>
-        
-        <div className="mt-6 space-y-3">
-          <div className="flex items-center gap-1">
-            <ChefHatIcon size={18} />
-            <h4 className="font-semibold">Ingredientes</h4>
+        <ScrollArea className="h-full">
+          <div className="mt-6 space-y-3">
+            <h4 className="font-semibold">Sobre</h4>
+            <p className="text-sm text-muted-foreground">{product.description}</p>
           </div>
-          <p className="text-sm text-muted-foreground">{product.description}</p>
-        </div>
+        
+          <div className="mt-6 space-y-3">
+            <div className="flex items-center gap-1">
+              <ChefHatIcon size={18} />
+              <h4 className="font-semibold">Ingredientes</h4>
+            </div>
+            <ul className="list-disc px-5 text-sm text-muted-foreground">
+              {product.ingredients.map(ingredient => (
+                <li key={ingredient}>{ingredient}</li>
+              ))}
+            </ul>
+          </div>
+        </ScrollArea>
       </div>
 
       <Button className="mt-6 w-full rounded-full">Adicionar à sacola</Button>
